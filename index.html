@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskFlow Pro Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:#f1f5f9;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --accent:#6366f1;
+  --sidebar:#0f172a;
+}
+
+.dark {
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#f1f5f9;
+  --muted:#94a3b8;
+  --accent:#818cf8;
+  --sidebar:#020617;
+}
+
+* { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  transition:.3s ease;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width:240px;
+  background:var(--sidebar);
+  color:white;
+  height:100vh;
+  padding:25px;
+  position:fixed;
+  transition:.3s ease;
+}
+.sidebar.collapsed { width:70px; }
+.sidebar h2 { margin-bottom:30px; }
+.sidebar button {
+  width:100%;
+  margin-bottom:20px;
+}
+.sidebar a {
+  display:block;
+  color:#cbd5e1;
+  text-decoration:none;
+  margin-bottom:15px;
+}
+.sidebar a:hover { color:white; }
+
+/* MAIN */
+.main {
+  margin-left:240px;
+  width:calc(100% - 240px);
+  padding:30px;
+  transition:.3s ease;
+}
+.sidebar.collapsed + .main {
+  margin-left:70px;
+  width:calc(100% - 70px);
+}
+
+/* TOPBAR */
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+button {
+  background:var(--accent);
+  border:none;
+  color:white;
+  padding:8px 16px;
+  border-radius:6px;
+  cursor:pointer;
+}
+button:hover { opacity:.9; }
+
+/* CARDS */
+.stats {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  margin-bottom:30px;
+}
+.card {
+  background:var(--card);
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+/* FILTER */
+.filter {
+  margin-bottom:20px;
+}
+.filter button {
+  margin-right:10px;
+  background:#e2e8f0;
+  color:#111;
+}
+.filter button.active {
+  background:var(--accent);
+  color:white;
+}
+
+/* TABLE */
+.table-container {
+  background:var(--card);
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+th,td { padding:10px 0; }
+tr { border-bottom:1px solid #e2e8f0; }
+.status {
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+}
+.completed { background:#dcfce7;color:#166534; }
+.inprogress { background:#fef9c3;color:#854d0e; }
+.pending { background:#fee2e2;color:#991b1b; }
+
+.delete-btn {
+  background:#ef4444;
+  font-size:12px;
+  padding:4px 8px;
+}
+
+/* MODAL */
+.modal {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+.modal-content {
+  background:var(--card);
+  padding:30px;
+  border-radius:12px;
+  width:300px;
+}
+.modal input, .modal select {
+  width:100%;
+  padding:8px;
+  margin-bottom:10px;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .main{margin-left:0;width:100%;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar" id="sidebar">
+  <h2>TaskFlow</h2>
+  <button onclick="toggleSidebar()">Toggle Menu</button>
+  <button onclick="openModal()">+ New Task</button>
+  <button onclick="toggleTheme()">Toggle Theme</button>
+  <button onclick="confirmReset()">Reset Demo</button>
+  <a href="#">Dashboard</a>
+  <a href="#">Projects</a>
+</div>
+
+<div class="main">
+
+  <div class="topbar">
+    <h1>Dashboard</h1>
+  </div>
+
+  <div class="stats">
+    <div class="card"><h3>Total</h3><p id="totalCount">0</p></div>
+    <div class="card"><h3>Completed</h3><p id="completedCount">0</p></div>
+    <div class="card"><h3>In Progress</h3><p id="progressCount">0</p></div>
+  </div>
+
+  <div class="filter">
+    <button onclick="filterTasks('all')" class="active">All</button>
+    <button onclick="filterTasks('completed')">Completed</button>
+    <button onclick="filterTasks('inprogress')">In Progress</button>
+    <button onclick="filterTasks('pending')">Pending</button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="taskTable"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h3>New Task</h3>
+    <input type="text" id="taskName" placeholder="Task name">
+    <select id="taskStatus">
+      <option value="completed">Completed</option>
+      <option value="inprogress">In Progress</option>
+      <option value="pending">Pending</option>
+    </select>
+    <button onclick="addTask()">Add</button>
+  </div>
+</div>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [
+  {name:"Landing Page Design",status:"completed"},
+  {name:"API Integration",status:"inprogress"},
+  {name:"Database Setup",status:"pending"}
+];
+
+function saveTasks(){ localStorage.setItem("tasks",JSON.stringify(tasks)); }
+
+function renderTasks(filter="all"){
+  const table=document.getElementById("taskTable");
+  table.innerHTML="";
+  tasks.forEach((task,index)=>{
+    if(filter==="all"||task.status===filter){
+      const row=document.createElement("tr");
+      row.draggable=true;
+      row.innerHTML=`
+        <td>${task.name}</td>
+        <td><span class="status ${task.status}">${task.status}</span></td>
+        <td><button class="delete-btn" onclick="deleteTask(${index})">Delete</button></td>
+      `;
+      table.appendChild(row);
+    }
+  });
+  updateCounts();
+}
+
+function addTask(){
+  const name=document.getElementById("taskName").value;
+  const status=document.getElementById("taskStatus").value;
+  if(!name)return;
+  tasks.push({name,status});
+  saveTasks();
+  renderTasks();
+  closeModal();
+}
+
+function deleteTask(i){
+  tasks.splice(i,1);
+  saveTasks();
+  renderTasks();
+}
+
+function updateCounts(){
+  document.getElementById("totalCount").textContent=tasks.length;
+  document.getElementById("completedCount").textContent=tasks.filter(t=>t.status==="completed").length;
+  document.getElementById("progressCount").textContent=tasks.filter(t=>t.status==="inprogress").length;
+}
+
+function filterTasks(status){
+  document.querySelectorAll(".filter button").forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+  renderTasks(status);
+}
+
+function resetDemo() {
+  localStorage.removeItem("tasks");
+  location.reload();
+}
+
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
+function toggleTheme(){
+  document.body.classList.toggle("dark");
+  localStorage.setItem("theme",document.body.classList.contains("dark")?"dark":"light");
+}
+
+function openModal(){ document.getElementById("modal").style.display="flex"; }
+function closeModal(){ document.getElementById("modal").style.display="none"; }
+
+window.onclick = function(e) {
+  if (e.target.id === "modal") closeModal();
+  if (e.target.id === "resetModal") closeReset();
+}
+
+if(localStorage.getItem("theme")==="dark"){
+  document.body.classList.add("dark");
+}
+
+function confirmReset() {
+  document.getElementById("resetModal").style.display = "flex";
+}
+
+function closeReset() {
+  document.getElementById("resetModal").style.display = "none";
+}
+
+function resetDemo() {
+  localStorage.removeItem("tasks");
+  closeReset();
+  showToast();
+  setTimeout(() => location.reload(), 1200);
+}
+
+function showToast() {
+  const toast = document.getElementById("toast");
+  toast.style.display = "block";
+  setTimeout(() => {
+    toast.style.opacity = "1";
+  }, 10);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+
+renderTasks();
+</script>
+
+<div class="modal" id="resetModal">
+  <div class="modal-content">
+    <h3>Reset Demo?</h3>
+    <p style="margin:15px 0;">This will restore all original demo tasks.</p>
+    <button onclick="resetDemo()">Yes, Reset</button>
+    <button onclick="closeReset()" style="background:#94a3b8;margin-left:10px;">Cancel</button>
+  </div>
+</div>
+
+<div id="toast" style="
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  background:#111827;
+  color:white;
+  padding:15px 20px;
+  border-radius:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+  display:none;
+  opacity:0;
+  transition:opacity .3s ease;
+">
+  Demo reset successfully.
+</div>
+
+</body>
+</html>
