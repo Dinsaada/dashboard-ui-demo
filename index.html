@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Willow Grove Counseling | Private Therapy in Phoenix</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+font-family:'Inter',sans-serif;
+background:#f5efe8;
+color:#3f3a36;
+line-height:1.7;
+overflow-x:hidden;
+}
+
+/* NAV */
+nav{
+position:fixed;
+top:0;
+width:100%;
+background:rgba(245,239,232,.95);
+backdrop-filter:blur(10px);
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 8%;
+z-index:1000;
+border-bottom:1px solid #e4dcd4;
+}
+.logo{
+font-family:'Cormorant Garamond',serif;
+font-size:22px;
+}
+nav a{
+text-decoration:none;
+color:#6b5a50;
+margin-left:28px;
+font-weight:500;
+}
+nav a:hover{color:#8e6f5c}
+
+/* HERO */
+.hero{
+padding-top:140px; /* space for fixed nav */
+min-height:90vh;
+display:flex;
+align-items:center;
+background:
+linear-gradient(to right, rgba(245,239,232,.92) 40%, rgba(245,239,232,.5) 70%, rgba(245,239,232,0) 100%),
+url("images/hero-office.jpg") center/cover no-repeat;
+}
+
+.hero-content{
+max-width:600px;
+margin-left:8%;
+}
+
+h1{
+font-family:'Cormorant Garamond',serif;
+font-size:58px;
+margin-bottom:25px;
+}
+
+p{font-size:18px;color:#5a514c}
+
+.button-primary{
+display:inline-block;
+margin-top:30px;
+background:#5f6f5e;
+color:white;
+padding:18px 44px;
+border-radius:60px;
+text-decoration:none;
+font-weight:600;
+box-shadow:0 15px 35px rgba(0,0,0,.18);
+transition:.3s ease;
+}
+.button-primary:hover{
+background:#4c5b4b;
+transform:translateY(-3px);
+}
+
+/* GENERAL SECTIONS */
+section{
+padding:100px 8%;
+}
+
+h2{
+font-family:'Cormorant Garamond',serif;
+font-size:36px;
+margin-bottom:30px;
+text-align:center;
+}
+
+/* ABOUT */
+.about{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:60px;
+align-items:center;
+}
+.about img{
+width:100%;
+border-radius:30px;
+box-shadow:0 20px 40px rgba(0,0,0,.08);
+}
+
+/* SERVICES */
+.services{
+background:#f0e8e1;
+}
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:40px;
+text-align:center;
+}
+.card h3{
+font-family:'Cormorant Garamond',serif;
+font-size:24px;
+margin-bottom:15px;
+}
+
+/* ROOM FEATURE SECTION */
+.room-feature{
+  height:500px;
+  background:
+    linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.25)),
+    url("images/therapy-room-detail.jpg") center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ROOM OVERLAY */
+.room-feature{
+  height:500px;
+  background:
+    linear-gradient(rgba(60,50,45,.65), rgba(60,50,45,.65)),
+    url("images/therapy-room-detail.jpg") center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.room-overlay{
+  text-align:center;
+  max-width:700px;
+  padding:20px;
+}
+
+.room-overlay h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:42px;
+  margin-bottom:20px;
+  color:#ffffff;
+  text-shadow:0 4px 20px rgba(0,0,0,.5);
+}
+
+.room-overlay p{
+  font-size:18px;
+  color:#ffffff !important;
+  text-shadow:0 2px 15px rgba(0,0,0,.5);
+}
+
+/* RIGHT FOR YOU */
+.right-section{
+background:white;
+text-align:center;
+}
+.right-section ul{
+list-style:none;
+margin-top:20px;
+line-height:2;
+}
+
+/* INSURANCE */
+.insurance{
+background:#efe6dd;
+text-align:center;
+}
+.insurance-box{
+background:white;
+padding:50px;
+border-radius:30px;
+max-width:700px;
+margin:0 auto;
+box-shadow:0 20px 40px rgba(0,0,0,.05);
+}
+
+/* FORM */
+.form-section{
+background:white;
+}
+form{
+max-width:600px;
+margin:0 auto;
+display:flex;
+flex-direction:column;
+gap:18px;
+}
+input,textarea{
+padding:14px;
+border:1px solid #ddd;
+border-radius:10px;
+background:#faf7f3;
+font-family:'Inter',sans-serif;
+}
+textarea{min-height:120px}
+button{
+background:#5f6f5e;
+color:white;
+padding:16px;
+border:none;
+border-radius:50px;
+cursor:pointer;
+}
+button:hover{background:#4c5b4b}
+
+/* FINAL CTA */
+.cta{
+background:#8e6f5c;
+color:white;
+text-align:center;
+padding:120px 8%;
+}
+.cta .button-primary{
+background:white;
+color:#5f6f5e;
+}
+.cta .button-primary:hover{
+background:#f0e8e1;
+}
+
+/* FOOTER */
+footer{
+background:#3f3a36;
+color:#d8d0c8;
+text-align:center;
+padding:40px 8%;
+font-size:14px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+.about{grid-template-columns:1fr}
+.grid{grid-template-columns:1fr}
+.hero{min-height:auto;padding-top:160px;padding-bottom:80px}
+h1{font-size:40px}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">Willow Grove Counseling</div>
+<div>
+<a href="#about">About</a>
+<a href="#services">Services</a>
+<a href="#right">Is Therapy Right?</a>
+<a href="#contact">Contact</a>
+</div>
+</nav>
+
+<section class="hero">
+<div class="hero-content">
+<h1>A Quiet Place for Healing</h1>
+<p>Private therapy for individuals, couples, and families seeking clarity, connection, and meaningful growth.</p>
+<a href="#contact" class="button-primary">Schedule a Consultation</a>
+</div>
+</section>
+
+<section id="about" class="about">
+<div>
+<h2>Meet Dr. Sophia Bennett</h2>
+<p>I provide a calm, confidential environment where thoughtful conversations lead to lasting change.</p>
+<p>Specializing in anxiety, trauma-informed therapy, relationship dynamics, and family transitions.</p>
+</div>
+<div>
+<img src="images/therapist-portrait.jpg" alt="Therapist portrait">
+</div>
+</section>
+
+<section id="services" class="services">
+<h2>Areas of Focus</h2>
+<div class="grid">
+<div class="card">
+<h3>Individual Therapy</h3>
+<p>Anxiety, burnout, grief, and personal growth.</p>
+</div>
+<div class="card">
+<h3>Couples Counseling</h3>
+<p>Strengthening communication and rebuilding trust.</p>
+</div>
+<div class="card">
+<h3>Family Therapy</h3>
+<p>Support through conflict and transition.</p>
+</div>
+</div>
+</section>
+
+<section class="room-feature">
+  <div class="room-overlay">
+    <div class="room-content">
+      <h2>A Space Designed for Calm</h2>
+      <p>
+        Every detail of the office is intentionally chosen to create warmth, privacy,
+        and a sense of emotional safety.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="right" class="right-section">
+<h2>Is Therapy Right For You?</h2>
+<p>You may feel overwhelmed or ready for something to change. Therapy offers a supportive space to reflect and grow.</p>
+<ul>
+<li>• Persistent anxiety or emotional exhaustion</li>
+<li>• Relationship or family tension</li>
+<li>• Life transitions or identity shifts</li>
+<li>• A desire for clarity and deeper understanding</li>
+</ul>
+</section>
+
+<section class="insurance">
+<h2>Fees & Insurance</h2>
+<div class="insurance-box">
+<p><strong>Individual Sessions:</strong> $195</p>
+<p><strong>Couples/Family Sessions:</strong> $225</p>
+<p>Out-of-network provider. Superbills available. Limited sliding scale appointments offered.</p>
+</div>
+</section>
+
+<section id="contact" class="form-section">
+<h2>Request a Consultation</h2>
+<form onsubmit="event.preventDefault(); alert('Demo submission.');">
+<input type="text" placeholder="Full Name" required>
+<input type="email" placeholder="Email Address" required>
+<input type="tel" placeholder="Phone Number">
+<textarea placeholder="Briefly share what brings you to therapy"></textarea>
+<button type="submit">Submit Inquiry</button>
+</form>
+</section>
+
+<section class="cta">
+<h2>Begin Your Healing Journey</h2>
+<p>Call (480) 555-1234 to schedule a confidential consultation.</p>
+<a href="tel:4805551234" class="button-primary">Call Now</a>
+</section>
+
+<footer>
+© 2026 Willow Grove Counseling • Phoenix, AZ • (480) 555-1234
+</footer>
+
+</body>
+</html>
